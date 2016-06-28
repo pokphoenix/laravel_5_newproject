@@ -19,8 +19,8 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::group(['middleware' => []], function () {
-    Route::controller('authen', 'UserController');
+Route::group(['prefix' => 'api', 'middleware' => ['web']], function () {
+    Route::controller('auth', 'AuthController');
     Route::resource('user', 'UserController');
     Route::resource('branch', 'BranchController');
     Route::resource('permission', 'PermissionController');

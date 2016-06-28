@@ -41,13 +41,9 @@ class CreateUserTables extends Migration
             $table->string('name', 50)->unique();
             $table->string('email', 100);
             $table->string('phone', 20);
+            $table->string('phone_2', 20);
             $table->string('fax', 20);
-            $table->string('address', 255);
-            $table->string('distinct',255);
-            $table->string('amphur',255);
-            $table->string('province',255);
-            $table->string('country_id',255)->default('218');
-            $table->string('zipcode',255);
+            $table->text('address');
             $table->text('desc');
             $table->timestamps() ;
         });
