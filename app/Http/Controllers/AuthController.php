@@ -19,6 +19,7 @@ class AuthController extends Controller
         $userId = 1;
         Auth::loginUsingId($userId);
 
+
         // Todo Before Return
 
 //        $data = Input::all();
@@ -45,6 +46,17 @@ class AuthController extends Controller
 //            }
 //            return BF::result(false, $e->getMessage());
 //        }
+    }
+
+    public function getLogout()
+    {
+        // Todo Check User/Pass Here
+
+        // If login correct
+        Auth::logout();
+        Session::flush();
+
+        // Todo return something;
     }
 
     public function postChangePass()
