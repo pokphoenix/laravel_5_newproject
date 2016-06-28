@@ -19,7 +19,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::group(['prefix' => 'api', 'middleware' => ['web']], function () {
+Route::group(['prefix' => 'api', 'middleware' => []], function () {
     Route::controller('auth', 'AuthController');
     Route::resource('user', 'UserController');
     Route::resource('branch', 'BranchController');

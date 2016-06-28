@@ -10,6 +10,8 @@ use App\Models\UserType;
 use App\User;
 use Input;
 use BF;
+use Validator;
+use Auth;
 class UserController extends Controller
 {
     public function index()
@@ -18,12 +20,11 @@ class UserController extends Controller
 
     public function create()
     {
-        $initData = [];
-        $data =  array_merge([
+        $data = [
             'roles' => Role::all(),
             'usertypes' => UserType::all(),
-            'branches' => Branch::all(),
-        ], $initData);
+            'branches' => Branch::all()
+        ];
         return BF::result(true, ['action' => 'create', 'data' => $data]);
     }
 
@@ -146,4 +147,40 @@ class UserController extends Controller
         }
         return BF::result(true, ['redirect' => '/app/users']);
     }
+
+    public function getLogin()
+    {
+
+        $rules = array(
+            'username'    => 'required', // make sure the email is an actual email
+            'password' => 'required|alphaNum|min:3' // password can only be alphanumeric and has to be greater than 3 characters
+        );
+
+        $validator = Validator::make(Input::all(), $rules);
+
+        if ($validator->fails()) {
+            return BF::result(false, $validator);
+        } else {
+
+            $username = Input::get('username') ;
+            $password = Input::get('password') ;
+
+            if (!preg_match("/@/", $username)) {
+                $search_column = 'name';
+            } else {
+                $search_column = 'email';
+            }
+
+
+            if (Auth::attempt([$search_column => $username, 'password' => $password], Input::has('remember'))) {
+                return redirect()->intended('main');
+            } else {
+                return BF::result(false, "Error!! Username or Password Incorrect. \nPlease try again.");
+            }
+
+
+
+        }
+    }
+
 }
